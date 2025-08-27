@@ -1,4 +1,4 @@
-# app.py (VERSÃO ATUALIZADA)
+# app.py (VERSÃO CORRIGIDA E FINAL)
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 import json
 import os
@@ -7,11 +7,13 @@ from collections import defaultdict
 
 app = Flask(__name__)
 
-# --- NÚMERO DE COLABORADORES ---
+# --- CONFIGURAÇÃO CENTRAL ---
 # Altere este número para o total de pessoas que participam na partilha.
 NUM_EMPLOYEES = 3 
+# Altere a password para aceder à área de admin.
+ADMIN_PASSWORD = 'JTD2026'
 
-# --- BASE DE DADOS E LÓGICA DE CÁLCULO (sem alterações) ---
+# --- Base de Dados e Lógica de Cálculo ---
 DATA_FILE = 'monthly_data.json'
 
 def get_data():
@@ -32,49 +34,39 @@ def calculate_bonus_logic(monthly_profit, num_employees=NUM_EMPLOYEES):
     payout_per_employee = monthly_payout_total / num_employees
     return { "bonus_pool": bonus_pool, "monthly_payout_total": monthly_payout_total, "semester_reserve": semester_reserve, "payout_per_employee": payout_per_employee }
 
-# --- NOVA LÓGICA PARA CALCULAR OS TOTAIS SEMESTRAIS ---
 def calculate_semester_totals(all_monthly_data):
     semester_reserves = defaultdict(float)
     for month_key, data in all_monthly_data.items():
-        year, month = map(int, month_key.split('-'))
-        profit = data.get('profit', 0)
-        
-        # Apenas lucros positivos contribuem para a reserva
-        if profit > 0:
-            reserve_value = calculate_bonus_logic(profit)['semester_reserve']
-            
-            # Determinar o semestre (S1 ou S2)
-            semester_key = f"{year}-S1" if month <= 6 else f"{year}-S2"
-            semester_reserves[semester_key] += reserve_value
-            
+        try:
+            year, month = map(int, month_key.split('-'))
+            profit = data.get('profit', 0)
+            if profit > 0:
+                reserve_value = calculate_bonus_logic(profit)['semester_reserve']
+                semester_key = f"{year}-S1 (Jan-Jun)" if month <= 6 else f"{year}-S2 (Jul-Dez)"
+                semester_reserves[semester_key] += reserve_value
+        except ValueError:
+            # Ignora chaves de mês mal formatadas, se existirem
+            continue
     return dict(sorted(semester_reserves.items(), reverse=True))
 
-# --- ROTAS DA APLICAÇÃO ---
+# --- Rotas da Aplicação ---
 @app.route('/')
 def dashboard():
-    """A página principal que agora mostra também o bónus semestral."""
     all_data = get_data()
-    
-    # Processamento para a tabela mensal
     dashboard_data = {}
     sorted_months = sorted(all_data.keys(), reverse=True)
     for month_key in sorted_months:
-        data = all_data[month_key]
+        data = all_data.get(month_key, {})
         profit = data.get('profit', 0)
         bonus_info = calculate_bonus_logic(profit)
         dashboard_data[month_key] = { "profit": profit, **bonus_info }
-        
-    # NOVO: Calcular os totais semestrais
     semester_totals = calculate_semester_totals(all_data)
-    
     return render_template('index.html', data=dashboard_data, semester_data=semester_totals, num_employees=NUM_EMPLOYEES)
 
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
-    """Página de admin (sem alterações na lógica principal)."""
     if request.method == 'POST':
-        # Altere a sua password aqui se desejar
-        if request.form.get('password') == 'JTD2026':
+        if request.form.get('password') == ADMIN_PASSWORD:
             month_year = request.form.get('month')
             try:
                 profit = float(request.form.get('profit'))
@@ -92,7 +84,7 @@ def admin():
 if __name__ == '__main__':
     print("*"*50)
     print("Servidor da App de Transparência JTD a arrancar...")
-    print("Para ver o dashboard, abra o seu browser e vá para: http://12.0.0.1:5000")
+    print("Para ver o dashboard, abra o seu browser e vá para: http://127.0.0.1:5000")
     print("\nPara adicionar dados, vá para: http://127.0.0.1:5000/admin")
     print("*"*50)
     app.run(host='0.0.0.0', port=5000, debug=False)
