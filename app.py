@@ -45,7 +45,7 @@ def dashboard():
 @app.route('/admin', methods=['GET', 'POST'])
 def admin():
     if request.method == 'POST':
-        if request.form.get('password') == 'JTD2026':
+        if request.form.get('password') == 'Franciscaines2015JTD2026':
             month_year = request.form.get('month')
             try:
                 profit = float(request.form.get('profit'))
