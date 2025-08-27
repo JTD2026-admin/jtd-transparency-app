@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head><meta charset="UTF-8"><title>Admin - Inserir Dados</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head>
+<body>
+    <div class="container">
+        <header><h1>Área de Administração</h1><p>Inserir o resultado do mês.</p></header>
+        <form action="/admin" method="post" class="login-form">
+            <label for="month">Mês e Ano (YYYY-MM):</label><input type="month" id="month" name="month" value="{{ current_month }}" required>
+            <label for="profit">Resultado do Mês (€):</label><input type="number" step="0.01" id="profit" name="profit" required placeholder="Ex: 10500.50">
+            <label for="password">Password:</label><input type="password" id="password" name="password" required>
+            <button type="submit">Submeter Dados</button>
+        </form>
+    </div>
+</body>
+</html>

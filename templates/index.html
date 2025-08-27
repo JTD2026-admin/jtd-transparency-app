@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head><meta charset="UTF-8"><title>Dashboard de Transparência - JTD</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head>
+<body>
+    <div class="container">
+        <header><h1>Dashboard de Transparência JTD</h1><p>O nosso sucesso, partilhado por todos.</p></header>
+        <div class="table-container">
+            <table>
+                <thead><tr><th>Mês</th><th>Resultado do Mês</th><th>Bónus Pool Total (50%)</th><th>Pagamento Mensal (p/ Colaborador)</th><th>Valor Adicionado à Reserva Semestral</th></tr></thead>
+                <tbody>
+                    {% for month, values in data.items() %}<tr class="{% if values.profit > 0 %}positive{% else %}negative{% endif %}">
+                        <td>{{ month }}</td><td>{{ "€{:,.2f}".format(values.profit) }}</td><td>{{ "€{:,.2f}".format(values.bonus_pool) }}</td><td class="highlight">{{ "€{:,.2f}".format(values.payout_per_employee) }}</td><td>{{ "€{:,.2f}".format(values.semester_reserve) }}</td>
+                    </tr>{% else %}<tr><td colspan="5">Ainda não foram inseridos dados.</td></tr>{% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <footer><p>Juntos, construímos o futuro da JTD.</p></footer>
+    </div>
+</body>
+</html>
