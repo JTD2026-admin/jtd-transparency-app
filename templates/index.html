@@ -1,20 +1,79 @@
 <!DOCTYPE html>
 <html lang="pt">
-<head><meta charset="UTF-8"><title>Dashboard de Transparência - JTD</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Transparência - JTD</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
 <body>
     <div class="container">
-        <header><h1>Dashboard de Transparência JTD</h1><p>O nosso sucesso, partilhado por todos.</p></header>
-        <div class="table-container">
+        <header>
+            <h1>Dashboard de Transparência JTD</h1>
+            <p>O nosso sucesso, partilhado por todos.</p>
+        </header>
+        
+        <div class="section">
+            <h2>💰 Bónus Semestral</h2>
+            <p>O valor acumulado para o grande pagamento de meio e fim de ano.</p>
             <table>
-                <thead><tr><th>Mês</th><th>Resultado do Mês</th><th>Bónus Pool Total (50%)</th><th>Pagamento Mensal (p/ Colaborador)</th><th>Valor Adicionado à Reserva Semestral</th></tr></thead>
+                <thead>
+                    <tr>
+                        <th>Semestre</th>
+                        <th>Total da Reserva Acumulada</th>
+                        <th class="highlight">Valor Estimado (p/ Colaborador)</th>
+                    </tr>
+                </thead>
                 <tbody>
-                    {% for month, values in data.items() %}<tr class="{% if values.profit > 0 %}positive{% else %}negative{% endif %}">
-                        <td>{{ month }}</td><td>{{ "€{:,.2f}".format(values.profit) }}</td><td>{{ "€{:,.2f}".format(values.bonus_pool) }}</td><td class="highlight">{{ "€{:,.2f}".format(values.payout_per_employee) }}</td><td>{{ "€{:,.2f}".format(values.semester_reserve) }}</td>
-                    </tr>{% else %}<tr><td colspan="5">Ainda não foram inseridos dados.</td></tr>{% endfor %}
+                    {% for semester, total_reserve in semester_data.items() %}
+                    <tr>
+                        <td>{{ semester }}</td>
+                        <td>{{ "€{:,.2f}".format(total_reserve) }}</td>
+                        <td class="highlight">{{ "€{:,.2f}".format(total_reserve / num_employees) }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3">Ainda não há dados suficientes para calcular o bónus semestral.</td>
+                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
-        <footer><p>Juntos, construímos o futuro da JTD.</p></footer>
+
+        <div class="section">
+            <h2>📊 Detalhe Mensal</h2>
+            <p>O cálculo detalhado de cada mês que contribui para os bónus.</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mês</th>
+                        <th>Resultado do Mês</th>
+                        <th>Bónus Pool Total (50%)</th>
+                        <th>Pagamento Mensal (p/ Colaborador)</th>
+                        <th>Valor Adicionado à Reserva</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for month, values in data.items() %}
+                    <tr class="{% if values.profit > 0 %}positive{% else %}negative{% endif %}">
+                        <td>{{ month }}</td>
+                        <td>{{ "€{:,.2f}".format(values.profit) }}</td>
+                        <td>{{ "€{:,.2f}".format(values.bonus_pool) }}</td>
+                        <td class="highlight-monthly">{{ "€{:,.2f}".format(values.payout_per_employee) }}</td>
+                        <td>{{ "€{:,.2f}".format(values.semester_reserve) }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5">Ainda não foram inseridos dados.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <footer>
+            <p>Juntos, construímos o futuro da JTD.</p>
+        </footer>
     </div>
 </body>
 </html>
