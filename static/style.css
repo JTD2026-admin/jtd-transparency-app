@@ -1,1 +1,21 @@
-body{font-family:sans-serif;background-color:#f4f7f9;color:#333;margin:0;padding:20px;}.container{max-width:900px;margin:0 auto;background-color:#fff;padding:30px;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,.08);}.header{text-align:center;border-bottom:1px solid #e0e0e0;padding-bottom:20px;margin-bottom:30px;}header h1{color:#005a9c;margin:0;}table{width:100%;border-collapse:collapse;}th,td{padding:12px 15px;text-align:left;border-bottom:1px solid #ddd;}thead th{background-color:#005a9c;color:#fff;font-weight:600;}tbody tr:nth-child(even){background-color:#f9f9f9;}tbody tr.positive{color:#2a7d2a;}tbody tr.negative{color:#c0392b;}td.highlight{font-weight:700;background-color:#e8f4fd;}footer{text-align:center;margin-top:30px;font-size:.9em;color:#777;}.login-form{display:flex;flex-direction:column;gap:15px;}.login-form input{padding:10px;border:1px solid #ccc;border-radius:4px;}.login-form button{padding:12px;background-color:#005a9c;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:1em;}.login-form button:hover{background-color:#004a80;}
+/* static/style.css (VERSÃO ATUALIZADA) */
+body {font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f4f7f9; color: #333; margin: 0; padding: 20px;}
+.container {max-width: 900px; margin: 0 auto; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,.08);}
+header {text-align: center; border-bottom: 1px solid #e0e0e0; padding-bottom: 20px; margin-bottom: 20px;}
+header h1 {color: #005a9c; margin: 0;}
+.section {margin-bottom: 40px;}
+.section h2 {color: #005a9c; border-bottom: 2px solid #e8f4fd; padding-bottom: 10px; margin-bottom: 10px;}
+.section p {font-size: 0.95em; color: #666; margin-top: 0;}
+table {width: 100%; border-collapse: collapse;}
+th, td {padding: 12px 15px; text-align: left; border-bottom: 1px solid #ddd;}
+thead th {background-color: #005a9c; color: #fff; font-weight: 600;}
+tbody tr:nth-child(even) {background-color: #f9f9f9;}
+tbody tr.positive {color: #2a7d2a;}
+tbody tr.negative {color: #c0392b;}
+td.highlight {font-weight: bold; font-size: 1.1em; background-color: #d4edda; color: #155724;}
+td.highlight-monthly {font-weight: bold; background-color: #e8f4fd;}
+footer {text-align: center; margin-top: 30px; font-size: 0.9em; color: #777;}
+.login-form {display: flex; flex-direction: column; gap: 15px;}
+.login-form input {padding: 10px; border: 1px solid #ccc; border-radius: 4px;}
+.login-form button {padding: 12px; background-color: #005a9c; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1em;}
+.login-form button:hover {background-color: #004a80;}
